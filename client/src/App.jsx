@@ -23,7 +23,7 @@ class App extends Component {
       // TESTING SOCKET.IO
       messages: [],
       userMessage: '',
-      timer: ' ',
+      timerTillNextGame: ' ',
       gameTimer: 5,
       // END TESTING SOCKET.IO
       view: 'prompt',
@@ -99,12 +99,12 @@ class App extends Component {
   }
 
   updateTimer(date) {
-    let secondsTillNewGame = 60 - (new Date(date).getSeconds());
-    this.setState({timer: secondsTillNewGame});
+    let secondsTillNextGame = 60 - (new Date(date).getSeconds());
+    this.setState({timerTillNextGame: secondsTillNextGame});
     let timer = setInterval(() => {
-      this.setState({timer: secondsTillNewGame});
-      secondsTillNewGame--;
-      if (secondsTillNewGame < 0) {
+      this.setState({timerTillNextGame: secondsTillNextGame});
+      secondsTillNextGame--;
+      if (secondsTillNextGame < 0) {
         clearInterval(timer);
         this.updateGameTimer();
         this.setState({view: 'prompt'})
@@ -165,7 +165,7 @@ class App extends Component {
           logout={this.logout.bind(this)}
           changeView={this.changeView.bind(this)}
           view={this.state.view}
-          timer={this.state.timer}
+          timerTillNextGame={this.state.timerTillNextGame}
           gameTimer={this.state.gameTimer}
         />
         <Body
