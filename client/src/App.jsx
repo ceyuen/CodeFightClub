@@ -28,14 +28,14 @@ class App extends Component {
       // END TESTING SOCKET.IO
       view: 'prompt',
     };
-
+    
     // TESTING SOCKET.IO
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateTimer = this.updateTimer.bind(this);
     // END TESTING SOCKET.IO
   }
-
+  
   //sets the state of the username when a user is logged in
   componentWillMount() {
     $.get('/isLoggedIn', function(data) {
@@ -54,7 +54,7 @@ class App extends Component {
           messages.push(message);
           this.setState({messages});
         });
-
+        
         subscribeToTimerSocket(this.updateTimer);
         // END TESTING SOCKET.IO
       }
@@ -100,6 +100,7 @@ class App extends Component {
 
   updateTimer(date) {
     let secondsTillNewGame = 60 - (new Date(date).getSeconds());
+    this.setState({timer: secondsTillNewGame});
     let timer = setInterval(() => {
       this.setState({timer: secondsTillNewGame});
       secondsTillNewGame--;
