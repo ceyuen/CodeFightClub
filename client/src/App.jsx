@@ -8,6 +8,7 @@ import 'brace/mode/javascript';
 import Header from './components/header.jsx';
 import Body from './components/body.jsx';
 import Footer from './components/footer.jsx';
+import ChatBox from './components/chatBox.jsx';
 import { subscribeToSocket, sendMessage, subscribeToTimerSocket} from './socket/api.jsx';
 
 Modal.setAppElement('#app');
@@ -16,11 +17,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // user
       user: {
         username: '',
         isAdmin: false
       },
-      // TESTING SOCKET.IO
+      // for chat
       messages: [],
       userMessage: '',
       timerTillNextGame: ' ',
@@ -28,9 +30,14 @@ class App extends Component {
       // END TESTING SOCKET.IO
       view: 'prompt',
     };
+<<<<<<< HEAD
     
     // TESTING SOCKET.IO
     this.handleInputChange = this.handleInputChange.bind(this);
+=======
+
+    this.handleInputChangeChat = this.handleInputChangeChat.bind(this);
+>>>>>>> d95e5e93bf4f237c71d69b2a1c126ac85056a8bc
     this.handleSubmit = this.handleSubmit.bind(this);
     this.updateTimer = this.updateTimer.bind(this);
     // END TESTING SOCKET.IO
@@ -62,6 +69,14 @@ class App extends Component {
     }.bind(this));
   }
 
+  subscribeToSocketChat() {
+    subscribeToSocket(data.username, (message) => {
+      let messages = [...this.state.messages];
+      messages.push(message);
+      this.setState({messages});
+    });
+  }
+
   //passed down into body and is setting state of user when user logs in or signs up
   setUser (user) {
     this.setState({ user: user});
@@ -84,8 +99,7 @@ class App extends Component {
     });
   }
 
-  // TESTING SOCKET.IO
-  handleInputChange(e) {
+  handleInputChangeChat(e) {
     this.setState({
       userMessage: e.target.value
     })
@@ -125,8 +139,21 @@ class App extends Component {
   // END TESTING SOCKET.IO
 
   render () {
+    // TESTING ChatBox
+    return (
+      <ChatBox 
+        messages={ this.state.messages }
+        userMessage={ this.state.userMessage }
+        handleInputChange={ this.state.handleInputChangeChat }
+        handleSubmit={ this.state.handleSubmit }
+      />
+    )
+
+    // END TESTING CHatbox
+
     // TESTING SOCKET.IO
     const messages = this.state.messages.map(message => <li>{ message }</li>);
+<<<<<<< HEAD
 
     // return (
     //   <div style={ {backgroundColor: 'black'} }>
@@ -155,11 +182,39 @@ class App extends Component {
     //     </form>
     //   </div>
     // )
+=======
+    
+    return (
+      <div style={ {backgroundColor: 'black'} }>
+      <p>Next Battle In: {this.state.timer}</p>
+        <ul className="messages">
+          { messages }
+        </ul>
+        <form action="">
+          <input 
+            name="message"
+            type="text" 
+            className="m"
+            placeholder="send a message"
+            value={ this.state.userMessage }
+            onChange={ this.handleInputChangeChat }
+          />
+          <button 
+            className="send-button"
+            onClick={ this.handleSubmit }  
+          >
+            Send
+          </button>
+        </form>
+      </div>
+    )
+>>>>>>> d95e5e93bf4f237c71d69b2a1c126ac85056a8bc
 
     // END TESTING SOCKET.IO
     return (
       <div className="container fullh fullw column">
         <Header
+<<<<<<< HEAD
           user={this.state.user}
           updateUser={this.setUser.bind(this)}
           logout={this.logout.bind(this)}
@@ -167,11 +222,18 @@ class App extends Component {
           view={this.state.view}
           timerTillNextGame={this.state.timerTillNextGame}
           gameTimer={this.state.gameTimer}
+=======
+          user={ this.state.user }
+          updateUser={ this.setUser.bind(this) }
+          logout={ this.logout.bind(this) }
+          changeView={ this.changeView.bind(this) }
+          view={ this.state.view }
+>>>>>>> d95e5e93bf4f237c71d69b2a1c126ac85056a8bc
         />
         <Body
-          isLoggedIn={!!this.state.user.username}
-          view={this.state.view}
-          username={this.state.user.username}
+          isLoggedIn={ !!this.state.user.username }
+          view={ this.state.view }
+          username={ this.state.user.username }
         />
         <Footer
         />
