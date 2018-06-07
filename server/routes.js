@@ -111,11 +111,7 @@ var databaseRoutes = function(app) {
   //Get names of all toy problems in database
   app.get('/problems', function(req, res) {
     db.findToyProblems((toyProblems) => {
-      let problemList = [];
-      toyProblems.forEach(function(toyProblem) {
-        problemList.push(toyProblem.title);
-      });
-      res.json(problemList);
+      res.json(toyProblems);
     });
   });
 
@@ -131,7 +127,7 @@ var databaseRoutes = function(app) {
   //Update a user's score within the database
   app.patch('/users:name', (req, res) => {
     var name = req.params.name.slice(1);
-    User.update({"username": name}, { $inc: {"score": 1}, $push: {"entry": new Date()} }, function(err, result) {
+    User.update({"username": name}, { $inc: {"score": 1} }, function(err, result) {
       if (err) console.log(err);
       console.log('patch: ', result);
     });
